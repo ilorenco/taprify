@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+@theme {
+    --color-blue-light: #97DFFC;
+
+    --color-purple-light: #858AE3;
+    --color-purple: #613DC1;
+    --color-purple-dark: #4E148C;
+
+    --color-background: #2C0735;
+    --color-base-label: #8D8686;
+    --color-base-hover: #D7D5D5;
+    --color-base-button: #E6E5E5;
+    --color-base-input: #EDEDED;
+    --color-base-card: #F3F2F2;
+    --color-base-white: #F6F6F6;
+
+    --font-inter: "Inter", sans-serif;
+    --font-quicksand: "Quicksand", sans-serif;
+}
