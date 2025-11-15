@@ -1,0 +1,6 @@
+@import "./theme.css";
+
+body {
+    background-color: var(--color-background);
+    font-family: var(--font-quicksand);
+}

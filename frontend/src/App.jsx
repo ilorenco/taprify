@@ -1,5 +1,7 @@
+import { Router } from './Router';
+
 export function App() {
     return (
-        <h1>Hello world!</h1>
+        <Router />
     )
 }
