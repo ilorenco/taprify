@@ -3,4 +3,5 @@
 body {
     background-color: var(--color-background);
     font-family: var(--font-quicksand);
+    -webkit-font-smoothing: antialiased;
 }
