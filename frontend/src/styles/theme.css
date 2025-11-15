@@ -2,6 +2,7 @@
 
 @theme {
     --color-blue-light: #97DFFC;
+    --color-blue-sky: #8EB5F0;
 
     --color-purple-light: #858AE3;
     --color-purple: #613DC1;
@@ -9,6 +10,7 @@
     --color-purple-darker: #270A46;
     --color-purple-royalty: #6A4FB8;
     --color-purple-ultra-violet: #6347B8;
+    --color-purple-night: #4B4E84;
 
     --color-background: #141414;
     --color-base-label: #8D8686;
