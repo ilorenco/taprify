@@ -5,13 +5,13 @@ import { FilterTabs } from './components/FilterTabs';
 export function Header() {
     const location = useLocation();
     const isSearchPage = location.pathname === '/search';
-    const isLibraryPage = location.pathname === '/library';
+    const isLibraryOrPlaylistDetailsPage = location.pathname === '/library' || location.pathname === '/playlist-details';
 
     return (
         <div className="flex items-center justify-between py-6 px-6">
             {isSearchPage ? (
                 <h1 className="text-2xl font-bold text-blue-light">Pesquisar</h1>
-            ) : isLibraryPage ? (
+            ) : isLibraryOrPlaylistDetailsPage ? (
                 <button className="flex items-center gap-2">
                     <ArrowLeftIcon size={24} color="var(--color-base-input)" strokeWidth={1.5} className="cursor-pointer" />
                     <h1 className="text-lg font-bold text-base-input">Voltar</h1>
