@@ -8,7 +8,7 @@ export function Header() {
     const isLibraryOrPlaylistDetailsPage = location.pathname === '/library' || location.pathname === '/playlist-details';
 
     return (
-        <div className="flex items-center justify-between py-6 px-6">
+        <div className="flex items-center justify-between py-6 px-6 bg-background">
             {isSearchPage ? (
                 <h1 className="text-2xl font-bold text-blue-light">Pesquisar</h1>
             ) : isLibraryOrPlaylistDetailsPage ? (
