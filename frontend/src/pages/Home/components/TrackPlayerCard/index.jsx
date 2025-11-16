@@ -7,7 +7,7 @@ export function TrackPlayerCard() {
                 <CircleUserIcon size={42} color="var(--color-blue-sky)" strokeWidth={1.5} />
                 <h1 className="font-semibold font-inter text-base text-base-input">Nome do autor</h1>
             </header>
-            <main className="w-full max-w-[500px] h-[80px] md:h-[90px] bg-purple-night rounded-2xl flex items-center gap-2 relative overflow-hidden">
+            <main className="w-full h-[80px] md:h-[90px] bg-purple-night rounded-2xl flex items-center gap-2 relative overflow-hidden">
                 <div className="w-[80px] md:w-[90px] h-full bg-purple-ultra-violet rounded-2xl flex items-start justify-center pt-2 shrink-0">
                     <div className="text-xs font-semibold text-base-card"></div>
                 </div>
