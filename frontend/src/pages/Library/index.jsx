@@ -45,7 +45,7 @@ export function Library() {
                         </div>
                     </div>
 
-                    <hr className="border-blue-light border-t-2" />
+                    <hr className="border-blue-light border-t-2 py-2" />
                 </div>
             </div>
 

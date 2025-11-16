@@ -8,6 +8,7 @@ import { Library } from './pages/Library';
 import { PlaylistDetails } from './pages/PlaylistDetails';
 import { Profile } from './pages/Profile';
 import { NotFound } from './pages/NotFound';
+import { Player } from './pages/Player';
 
 export function Router() {
     return (
@@ -22,6 +23,7 @@ export function Router() {
                     <Route path="/library" element={<Library />} />
                     <Route path="/playlist-details" element={<PlaylistDetails />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/player" element={<Player />} />
                 </Route>
             </Routes>
         </BrowserRouter>

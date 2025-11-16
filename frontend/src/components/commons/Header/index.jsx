@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 export function Header() {
     const location = useLocation();
     const isSearchPage = location.pathname === '/search';
-    const isLibraryOrPlaylistDetailsPage = location.pathname === '/library' || location.pathname === '/playlist-details' ;
+    const isLibraryOrPlaylistDetailsPage = location.pathname === '/library' || location.pathname === '/playlist-details' || location.pathname === '/player';
     const isProfilePage = location.pathname === '/profile';
 
     return (
