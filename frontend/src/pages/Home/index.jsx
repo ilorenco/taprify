@@ -10,6 +10,8 @@ export function Home() {
                     <AlbumTile />
                     <AlbumTile />
                     <AlbumTile />
+                    <AlbumTile />
+                    <AlbumTile />
                 </div>
             </section>
 
