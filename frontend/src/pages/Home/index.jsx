@@ -24,6 +24,11 @@ export function Home() {
                     <TrackPlayerCard />
                     <TrackPlayerCard />
                     <TrackPlayerCard />
+                    <TrackPlayerCard />
+                    <TrackPlayerCard />
+                    <TrackPlayerCard />
+                    <TrackPlayerCard />
+                    <TrackPlayerCard />
                 </div>
             </section>
         </div>

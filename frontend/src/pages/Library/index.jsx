@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { CirclePlusIcon, SlidersHorizontalIcon, SearchIcon, ArrowDownUpIcon } from 'lucide-react';
 import { PlaylistCard } from './components/PlaylistCard';
+import { CreatePlaylistModal } from './components/CreatePlaylistModal';
 
 export function Library() {
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
         <div className="flex flex-col h-full w-full">
             {/* Seção fixa do cabeçalho - sticky para ficar fixo ao scrollar */}
@@ -12,7 +16,7 @@ export function Library() {
                             <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-purple-light rounded-lg shrink-0"></div>
                             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-light">Sua biblioteca</h1>
                         </div>
-                        <button className="shrink-0">
+                        <button className="shrink-0" onClick={() => setIsOpen(true)}>
                             <CirclePlusIcon
                                 size={28}
                                 color="var(--color-base-input)"
@@ -63,6 +67,8 @@ export function Library() {
                     <PlaylistCard />
                 </div>
             </div>
+
+            <CreatePlaylistModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
         </div>
     )
 }
