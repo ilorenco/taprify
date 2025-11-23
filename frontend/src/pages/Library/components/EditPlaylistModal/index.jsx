@@ -2,28 +2,31 @@ import { useEffect, useState } from 'react';
 import { Modal } from '../../../../components/commons/Modal';
 import playlistService from '../../../../services/playlistService';
 
-export function CreatePlaylistModal({ isOpen, onClose, onPlaylistCreated }) {
+export function EditPlaylistModal({ isOpen, onClose, onPlaylistUpdated, playlist }) {
     const [playlistName, setPlaylistName] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (!isOpen) {
+        if (isOpen && playlist) {
+            setPlaylistName(playlist.name);
+            setError('');
+        } else if (!isOpen) {
             setPlaylistName('');
             setError('');
         }
-    }, [isOpen]);
+    }, [isOpen, playlist]);
 
-    const handleCreate = async () => {
-        if (!playlistName.trim()) return;
+    const handleUpdate = async () => {
+        if (!playlistName.trim() || !playlist) return;
 
         setLoading(true);
         setError('');
 
-        const result = await playlistService.createPlaylist(playlistName);
+        const result = await playlistService.updatePlaylist(playlist.id, playlistName);
 
         if (result.success) {
-            onPlaylistCreated?.();
+            onPlaylistUpdated?.();
             onClose();
         } else {
             setError(result.error);
@@ -36,7 +39,7 @@ export function CreatePlaylistModal({ isOpen, onClose, onPlaylistCreated }) {
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            title="Criar nova playlist"
+            title="Editar playlist"
             actions={
                 <>
                     <button
@@ -48,17 +51,17 @@ export function CreatePlaylistModal({ isOpen, onClose, onPlaylistCreated }) {
                     </button>
                     <button
                         className="bg-blue-sky text-white font-bold px-4 sm:px-5 md:px-6 py-2 rounded-lg hover:bg-purple-light/80 hover:cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
-                        onClick={handleCreate}
+                        onClick={handleUpdate}
                         disabled={!playlistName.trim() || loading}
                     >
-                        {loading ? 'Criando...' : 'Criar'}
+                        {loading ? 'Salvando...' : 'Salvar'}
                     </button>
                 </>
             }
         >
             <div className="flex flex-col gap-2">
                 <label className="text-white font-bold text-sm sm:text-base font-inter">
-                    Digite o nome da playlist
+                    Nome da playlist
                 </label>
                 <input
                     type="text"
@@ -68,7 +71,7 @@ export function CreatePlaylistModal({ isOpen, onClose, onPlaylistCreated }) {
                         setPlaylistName(e.target.value);
                         setError('');
                     }}
-                    onKeyDown={(e) => e.key === 'Enter' && !loading && handleCreate()}
+                    onKeyDown={(e) => e.key === 'Enter' && !loading && handleUpdate()}
                     className="bg-base-input rounded-lg px-3 sm:px-4 py-2 sm:py-2.5 outline-none focus:ring-3 focus:ring-purple-dark text-sm sm:text-base placeholder:font-medium font-medium w-full"
                     autoFocus
                     disabled={loading}

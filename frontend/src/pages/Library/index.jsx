@@ -1,10 +1,51 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CirclePlusIcon, SlidersHorizontalIcon, SearchIcon, ArrowDownUpIcon } from 'lucide-react';
 import { PlaylistCard } from './components/PlaylistCard';
 import { CreatePlaylistModal } from './components/CreatePlaylistModal';
+import { EditPlaylistModal } from './components/EditPlaylistModal';
+import playlistService from '../../services/playlistService';
 
 export function Library() {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+    const [playlists, setPlaylists] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    const loadPlaylists = async () => {
+        setLoading(true);
+        setError('');
+
+        const result = await playlistService.getMyPlaylists();
+
+        if (result.success) {
+            setPlaylists(result.playlists);
+        } else {
+            setError(result.error);
+        }
+
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        loadPlaylists();
+    }, []);
+
+    const handleEdit = (playlist) => {
+        setSelectedPlaylist(playlist);
+        setIsEditOpen(true);
+    };
+
+    const handleDelete = async (playlist) => {
+        const result = await playlistService.deletePlaylist(playlist.id);
+
+        if (result.success) {
+            loadPlaylists();
+        } else {
+            setError(result.error);
+        }
+    };
 
     return (
         <div className="flex flex-col h-full w-full">
@@ -16,7 +57,7 @@ export function Library() {
                             <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-purple-light rounded-lg shrink-0"></div>
                             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-blue-light">Sua biblioteca</h1>
                         </div>
-                        <button className="shrink-0" onClick={() => setIsOpen(true)}>
+                        <button className="shrink-0" onClick={() => setIsCreateOpen(true)}>
                             <CirclePlusIcon
                                 size={28}
                                 color="var(--color-base-input)"
@@ -56,19 +97,43 @@ export function Library() {
             {/* Área de rolagem dos cards */}
             <div className="flex-1 overflow-y-auto px-4 md:px-6 lg:px-8">
                 <div className="flex flex-col gap-3 md:gap-4 py-4 md:py-6">
-                    <PlaylistCard />
-                    <PlaylistCard />
-                    <PlaylistCard />
-                    <PlaylistCard />
-                    <PlaylistCard />
-                    <PlaylistCard />
-                    <PlaylistCard />
-                    <PlaylistCard />
-                    <PlaylistCard />
+                    {loading && (
+                        <p className="text-white text-center py-8">Carregando playlists...</p>
+                    )}
+
+                    {error && (
+                        <p className="text-red-500 text-center py-8">{error}</p>
+                    )}
+
+                    {!loading && !error && playlists.length === 0 && (
+                        <p className="text-white text-center py-8">
+                            Você ainda não tem playlists.
+                        </p>
+                    )}
+
+                    {!loading && !error && playlists.length > 0 && playlists.map((playlist) => (
+                        <PlaylistCard
+                            key={playlist.id}
+                            playlist={playlist}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
+                        />
+                    ))}
                 </div>
             </div>
 
-            <CreatePlaylistModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+            <CreatePlaylistModal
+                isOpen={isCreateOpen}
+                onClose={() => setIsCreateOpen(false)}
+                onPlaylistCreated={loadPlaylists}
+            />
+
+            <EditPlaylistModal
+                isOpen={isEditOpen}
+                onClose={() => setIsEditOpen(false)}
+                onPlaylistUpdated={loadPlaylists}
+                playlist={selectedPlaylist}
+            />
         </div>
     )
 }
