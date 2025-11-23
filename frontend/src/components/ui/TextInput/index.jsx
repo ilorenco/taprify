@@ -1,4 +1,4 @@
-export function TextInput({ placeholder, icon: Icon }) {
+export function TextInput({ placeholder, icon: Icon, type = 'text', name, value, onChange }) {
     return (
         <div className="relative w-full">
             {Icon && (
@@ -9,7 +9,10 @@ export function TextInput({ placeholder, icon: Icon }) {
                 />
             )}
             <input
-                type="text"
+                type={type}
+                name={name}
+                value={value}
+                onChange={onChange}
                 className="bg-base-input rounded-lg p-3 pl-16 outline-none focus:ring-3 text-xl focus:ring-purple-dark placeholder:text-xl placeholder:font-medium w-full font-medium"
                 placeholder={placeholder}
             />
