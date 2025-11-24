@@ -13,8 +13,6 @@ export function BottomNavigator() {
             <Link to="/library">
                 <LibraryBigIcon size={32} color="white" strokeWidth={2} />
             </Link>
-
-            <CirclePlusIcon size={32} color="white" strokeWidth={2} />
         </div>
     )
 }

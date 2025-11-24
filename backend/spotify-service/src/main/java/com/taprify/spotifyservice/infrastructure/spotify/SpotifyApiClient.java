@@ -1,6 +1,7 @@
 package com.taprify.spotifyservice.infrastructure.spotify;
 
 import com.taprify.spotifyservice.infrastructure.config.SpotifyConfig;
+import com.taprify.spotifyservice.infrastructure.spotify.dto.SpotifyAlbumDto;
 import com.taprify.spotifyservice.infrastructure.spotify.dto.SpotifyAlbumsResponse;
 import com.taprify.spotifyservice.infrastructure.spotify.dto.SpotifyTracksResponse;
 import lombok.RequiredArgsConstructor;
@@ -66,6 +67,32 @@ public class SpotifyApiClient {
         } catch (Exception e) {
             log.error("Error fetching tracks from Spotify API", e);
             throw new RuntimeException("Failed to fetch tracks from Spotify", e);
+        }
+    }
+
+    public SpotifyAlbumDto getAlbumById(String albumId) {
+        String token = tokenManager.getAccessToken();
+
+        log.info("Fetching album details from Spotify API for album ID: {}", albumId);
+
+        try {
+            SpotifyAlbumDto response = webClientBuilder
+                    .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(1024 * 1024))
+                    .build()
+                    .get()
+                    .uri(spotifyConfig.getApiUrl() + "/albums/" + albumId)
+                    .header("Authorization", "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(SpotifyAlbumDto.class)
+                    .block();
+
+            log.info("Successfully fetched album details for: {}",
+                    response != null ? response.getName() : "null");
+
+            return response;
+        } catch (Exception e) {
+            log.error("Error fetching album details from Spotify API", e);
+            throw new RuntimeException("Failed to fetch album details from Spotify", e);
         }
     }
 }

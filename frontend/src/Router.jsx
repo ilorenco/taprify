@@ -27,7 +27,7 @@ export function Router() {
                 <Route path="/" element={<Home />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/library" element={<Library />} />
-                <Route path="/playlist-details" element={<PlaylistDetails />} />
+                <Route path="/playlist/:albumId" element={<PlaylistDetails />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/player" element={<Player />} />
             </Route>

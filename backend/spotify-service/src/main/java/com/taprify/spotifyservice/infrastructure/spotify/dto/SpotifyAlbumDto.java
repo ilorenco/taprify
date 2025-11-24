@@ -22,6 +22,8 @@ public class SpotifyAlbumDto {
 
     private List<ArtistDto> artists;
 
+    private TracksDto tracks;
+
     @Data
     public static class ImageDto {
         private String url;
@@ -33,5 +35,25 @@ public class SpotifyAlbumDto {
     public static class ArtistDto {
         private String id;
         private String name;
+    }
+
+    @Data
+    public static class TracksDto {
+        private List<TrackItemDto> items;
+        private Integer total;
+    }
+
+    @Data
+    public static class TrackItemDto {
+        private String id;
+        private String name;
+
+        @JsonProperty("duration_ms")
+        private Integer durationMs;
+
+        @JsonProperty("track_number")
+        private Integer trackNumber;
+
+        private List<ArtistDto> artists;
     }
 }

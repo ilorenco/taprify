@@ -1,12 +1,15 @@
 package com.taprify.spotifyservice.interfaces.rest;
 
+import com.taprify.spotifyservice.application.album.GetAlbumDetailsHandler;
 import com.taprify.spotifyservice.application.album.GetAlbumRecommendationsHandler;
 import com.taprify.spotifyservice.application.album.GetAlbumsHandler;
+import com.taprify.spotifyservice.interfaces.rest.dto.AlbumDetailsResponse;
 import com.taprify.spotifyservice.interfaces.rest.dto.AlbumResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +23,7 @@ public class AlbumController {
 
     private final GetAlbumsHandler getAlbumsHandler;
     private final GetAlbumRecommendationsHandler getAlbumRecommendationsHandler;
+    private final GetAlbumDetailsHandler getAlbumDetailsHandler;
 
     @GetMapping
     public ResponseEntity<List<AlbumResponse>> getAlbums() {
@@ -33,5 +37,12 @@ public class AlbumController {
         log.info("GET /albums/recommendations - Fetching album recommendations");
         List<AlbumResponse> albums = getAlbumRecommendationsHandler.handle();
         return ResponseEntity.ok(albums);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AlbumDetailsResponse> getAlbumDetails(@PathVariable String id) {
+        log.info("GET /albums/{} - Fetching album details", id);
+        AlbumDetailsResponse albumDetails = getAlbumDetailsHandler.handle(id);
+        return ResponseEntity.ok(albumDetails);
     }
 }

@@ -1,6 +1,18 @@
+import { useNavigate } from 'react-router-dom';
+
 export function AlbumTile({ album }) {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        if (album?.id) {
+            navigate(`/playlist/${album.id}`);
+        }
+    };
+
     return (
-        <div className="w-full min-w-[140px] h-[55px] bg-purple-night rounded-sm flex items-center gap-2 transition-transform hover:scale-105 cursor-pointer overflow-hidden">
+        <div
+            onClick={handleClick}
+            className="w-full min-w-[140px] h-[55px] bg-purple-night rounded-sm flex items-center gap-2 transition-transform hover:scale-105 cursor-pointer overflow-hidden">
             {album?.imageUrl ? (
                 <img
                     src={album.imageUrl}

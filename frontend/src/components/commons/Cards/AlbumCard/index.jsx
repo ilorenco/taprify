@@ -1,6 +1,18 @@
+import { useNavigate } from 'react-router-dom';
+
 export function AlbumCard({ album }) {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        if (album?.id) {
+            navigate(`/playlist/${album.id}`);
+        }
+    };
+
     return (
-        <div className="min-w-[120px] w-[120px] sm:min-w-[140px] sm:w-[140px] md:min-w-[160px] md:w-[160px] h-[160px] sm:h-[180px] md:h-[200px] rounded-lg flex flex-col items-center justify-between p-2 shrink-0 transition-transform hover:scale-105 cursor-pointer relative overflow-hidden group">
+        <div
+            onClick={handleClick}
+            className="min-w-[120px] w-[120px] sm:min-w-[140px] sm:w-[140px] md:min-w-[160px] md:w-[160px] h-[160px] sm:h-[180px] md:h-[200px] rounded-lg flex flex-col items-center justify-between p-2 shrink-0 transition-transform hover:scale-105 cursor-pointer relative overflow-hidden group">
             {album?.imageUrl ? (
                 <>
                     <img

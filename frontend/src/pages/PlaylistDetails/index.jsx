@@ -1,8 +1,62 @@
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { SearchBar } from '../../components/ui/SearchBar';
 import { SlidersHorizontalIcon, CircleUserIcon, EllipsisIcon, ShuffleIcon, CirclePlayIcon } from 'lucide-react';
 import { TrackCard } from './components/TrackCard';
+import spotifyService from '../../services/spotifyService';
 
 export function PlaylistDetails() {
+    const { albumId } = useParams();
+    const [album, setAlbum] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function loadAlbumDetails() {
+            try {
+                const result = await spotifyService.getAlbumDetails(albumId);
+                if (result.success) {
+                    setAlbum(result.album);
+                } else {
+                    console.error('Failed to load album details:', result.error);
+                }
+            } catch (error) {
+                console.error('Error loading album details:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        if (albumId) {
+            loadAlbumDetails();
+        }
+    }, [albumId]);
+
+    const formatDuration = (ms) => {
+        const totalSeconds = Math.floor(ms / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return hours > 0
+            ? `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+            : `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-full">
+                <p className="text-base-card">Carregando detalhes do álbum...</p>
+            </div>
+        );
+    }
+
+    if (!album) {
+        return (
+            <div className="flex items-center justify-center h-full">
+                <p className="text-base-card">Álbum não encontrado</p>
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col h-full w-full">
             {/* Seção fixa do cabeçalho - sticky para ficar fixo ao scrollar */}
@@ -20,7 +74,7 @@ export function PlaylistDetails() {
 
                     <div className="flex flex-col gap-2 md:gap-3">
                         <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-light">
-                            Nome Playlist
+                            {album.name}
                         </h1>
                         <div className="flex items-center gap-2">
                             <CircleUserIcon
@@ -30,7 +84,7 @@ export function PlaylistDetails() {
                                 className="sm:w-9 sm:h-9 md:w-10 md:h-10"
                             />
                             <h2 className="font-medium text-base-card text-base sm:text-lg md:text-xl">
-                                Nome do autor
+                                {album.artist}
                             </h2>
                         </div>
                     </div>
@@ -38,10 +92,10 @@ export function PlaylistDetails() {
                     <div className="flex items-center justify-between w-full">
                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
                             <span className="font-medium text-base-card text-sm sm:text-base md:text-lg">
-                                000 músicas
+                                {album.totalTracks} músicas
                             </span>
                             <span className="font-medium text-base-card text-sm sm:text-base md:text-lg">
-                                00:00:00 min
+                                {formatDuration(album.totalDurationMs)}
                             </span>
                         </div>
                         <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
@@ -73,14 +127,13 @@ export function PlaylistDetails() {
             {/* Área de rolagem dos tracks */}
             <div className="flex-1 overflow-y-auto px-4 md:px-6 lg:px-8">
                 <div className="flex flex-col gap-3 md:gap-4 py-4 md:py-6">
-                    <TrackCard />
-                    <TrackCard />
-                    <TrackCard />
-                    <TrackCard />
-                    <TrackCard />
-                    <TrackCard />
-                    <TrackCard />
-                    <TrackCard />
+                    {album.tracks && album.tracks.length > 0 ? (
+                        album.tracks.map((track) => (
+                            <TrackCard key={track.id} track={track} />
+                        ))
+                    ) : (
+                        <p className="text-base-card">Nenhuma música disponível</p>
+                    )}
                 </div>
             </div>
         </div>
