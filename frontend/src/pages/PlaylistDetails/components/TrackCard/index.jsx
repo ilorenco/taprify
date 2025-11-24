@@ -1,11 +1,22 @@
-import { EllipsisVerticalIcon } from "lucide-react"
+import { EllipsisVerticalIcon, CirclePlayIcon } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import { usePlayer } from "../../../../contexts/PlayerContext"
 
 export function TrackCard({ track }) {
+    const navigate = useNavigate();
+    const { playTrack } = usePlayer();
+
     const formatDuration = (ms) => {
         const totalSeconds = Math.floor(ms / 1000);
         const minutes = Math.floor(totalSeconds / 60);
         const seconds = totalSeconds % 60;
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    const handlePlayClick = (e) => {
+        e.stopPropagation();
+        playTrack(track);
+        navigate('/player');
     };
 
     return (
@@ -27,6 +38,13 @@ export function TrackCard({ track }) {
                 <span className="text-base-card font-medium text-sm md:text-base">
                     {track?.durationMs ? formatDuration(track.durationMs) : '-:--'}
                 </span>
+                <CirclePlayIcon
+                    size={30}
+                    color="var(--color-base-input)"
+                    strokeWidth={2}
+                    className="cursor-pointer hover:scale-110 transition-transform"
+                    onClick={handlePlayClick}
+                />
                 <EllipsisVerticalIcon
                     size={30}
                     color="var(--color-base-input)"

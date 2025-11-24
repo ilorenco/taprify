@@ -29,7 +29,7 @@ export function PlaylistDetails() {
                             totalTracks: result.playlist.trackCount,
                             totalDurationMs: result.playlist.tracks.reduce((sum, track) => sum + (track.durationMs || 0), 0),
                             tracks: result.playlist.tracks.map(track => ({
-                                id: track.id,
+                                id: track.spotifyTrackId,  // Usar o Spotify ID, não o ID do banco
                                 trackNumber: null,
                                 name: track.trackName,
                                 artist: track.artistName,

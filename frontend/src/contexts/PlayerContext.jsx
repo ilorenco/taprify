@@ -1,9 +1,32 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const PlayerContext = createContext();
 
+const STORAGE_KEY = 'taprify_current_track';
+
 export function PlayerProvider({ children }) {
-    const [currentTrack, setCurrentTrack] = useState(null);
+    // Inicializa com track do localStorage se existir
+    const [currentTrack, setCurrentTrack] = useState(() => {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            return saved ? JSON.parse(saved) : null;
+        } catch (error) {
+            console.error('Error loading track from localStorage:', error);
+            return null;
+        }
+    });
+
+    useEffect(() => {
+        try {
+            if (currentTrack) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(currentTrack));
+            } else {
+                localStorage.removeItem(STORAGE_KEY);
+            }
+        } catch (error) {
+            console.error('Error saving track to localStorage:', error);
+        }
+    }, [currentTrack]);
 
     const playTrack = (track) => {
         setCurrentTrack(track);
