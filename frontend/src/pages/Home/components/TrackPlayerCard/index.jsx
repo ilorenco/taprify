@@ -1,9 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CircleUserIcon, EllipsisIcon, CirclePlayIcon, CirclePlusIcon } from 'lucide-react';
 import { OverflowMenu } from '../../../../components/commons/OverflowMenu';
 import playlistService from '../../../../services/playlistService';
+import { usePlayer } from '../../../../contexts/PlayerContext';
 
 export function TrackPlayerCard({ track }) {
+    const navigate = useNavigate();
+    const { playTrack } = usePlayer();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
     const [playlists, setPlaylists] = useState([]);
@@ -44,6 +48,12 @@ export function TrackPlayerCard({ track }) {
         } else {
             alert(result.error);
         }
+    };
+
+    const handlePlayClick = (e) => {
+        e.stopPropagation();
+        playTrack(track);
+        navigate('/player');
     };
 
     const menuOptions = playlists.map(playlist => ({
@@ -99,7 +109,13 @@ export function TrackPlayerCard({ track }) {
                             onClick={handleMenuClick}
                         />
                     </div>
-                    <CirclePlayIcon size={36} color="var(--color-base-input)" strokeWidth={1.5} className="cursor-pointer hover:scale-110 transition-transform" />
+                    <CirclePlayIcon
+                        size={36}
+                        color="var(--color-base-input)"
+                        strokeWidth={1.5}
+                        className="cursor-pointer hover:scale-110 transition-transform"
+                        onClick={handlePlayClick}
+                    />
                 </div>
 
             </main>

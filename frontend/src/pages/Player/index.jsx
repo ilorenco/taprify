@@ -1,34 +1,51 @@
 import { CirclePlusIcon } from 'lucide-react';
-import { PlayerControls } from './components/PlayerControls';
-import { ProgressBar } from './components/ProgressBar';
+import { usePlayer } from '../../contexts/PlayerContext';
 
 export function Player() {
+    const { currentTrack } = usePlayer();
+
+    if (!currentTrack) {
+        return (
+            <div className="flex flex-col gap-4 w-full h-full items-center justify-center px-4">
+                <p className="text-base-card text-xl">Nenhuma música selecionada</p>
+                <p className="text-base-input text-sm">Selecione uma música para começar a tocar</p>
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col gap-6 md:gap-8 w-full h-full items-center justify-center px-4 md:px-6 py-6">
-            {/* Capa do álbum */}
-            <div className="w-[250px] h-[250px] md:w-[290px] md:h-[290px] lg:w-[350px] lg:h-[350px] bg-purple-ultra-violet rounded-2xl shadow-lg"></div>
-
             {/* Informações da música */}
-            <div className="flex items-center justify-between w-full max-w-md md:max-w-lg">
-                <div className="flex flex-col gap-1 flex-1">
-                    <h1 className="font-bold text-base-card text-xl md:text-2xl truncate">Nome da música</h1>
-                    <h2 className="font-medium text-base-input text-sm md:text-base truncate">Nome do autor</h2>
+            <div className="flex items-center justify-between w-full max-w-md md:max-w-lg gap-4">
+                <div className="flex flex-col gap-1 flex-1 min-w-0">
+                    <h1 className="text-base-card font-bold text-xl md:text-2xl truncate">
+                        {currentTrack.name}
+                    </h1>
+                    <h2 className="text-base-input font-medium text-sm md:text-base truncate">
+                        {currentTrack.artist}
+                    </h2>
                 </div>
                 <CirclePlusIcon
                     size={36}
-                    color="var(--color-base-input)"
+                    color="var(--color-base-card)"
                     strokeWidth={2}
-                    className="cursor-pointer hover:scale-110 transition-transform shrink-0 ml-4"
+                    className="cursor-pointer hover:scale-110 transition-transform shrink-0"
                 />
             </div>
 
-            {/* Barra de progresso */}
+            {/* Spotify Player */}
             <div className="w-full max-w-md md:max-w-lg">
-                <ProgressBar />
+                <iframe
+                    src={`https://open.spotify.com/embed/track/${currentTrack.id}`}
+                    width="100%"
+                    height="380"
+                    frameBorder="0"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                    title="Spotify Player"
+                    className="rounded-xl"
+                />
             </div>
-
-            {/* Controles do player */}
-            <PlayerControls />
         </div>
     )
 }
