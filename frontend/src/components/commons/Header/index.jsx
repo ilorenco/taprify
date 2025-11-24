@@ -2,10 +2,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { CircleUserIcon, ArrowLeftIcon, LogOutIcon } from 'lucide-react';
 import { FilterTabs } from './components/FilterTabs';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export function Header() {
     const location = useLocation();
     const navigate = useNavigate();
+    const { logout } = useAuth();
     const isSearchPage = location.pathname === '/search';
     const isLibraryOrPlaylistDetailsPage =
         location.pathname === '/library' ||
@@ -34,7 +36,13 @@ export function Header() {
             )}
 
             {isProfilePage ? (
-                <LogOutIcon size={42} color="var(--color-purple-royalty)" strokeWidth={2} className="cursor-pointer" />
+                <LogOutIcon 
+                    size={42} 
+                    color="var(--color-purple-royalty)" 
+                    strokeWidth={2} 
+                    className="cursor-pointer" 
+                    onClick={logout}
+                />
             ) : (
                 <Link to="/profile">
                     <CircleUserIcon size={42} color="var(--color-purple-royalty)" strokeWidth={1.5} className="cursor-pointer" />

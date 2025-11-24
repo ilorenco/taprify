@@ -18,19 +18,13 @@ export function Player() {
             {/* Informações da música */}
             <div className="flex items-center justify-between w-full max-w-md md:max-w-lg gap-4">
                 <div className="flex flex-col gap-1 flex-1 min-w-0">
-                    <h1 className="text-base-card font-bold text-xl md:text-2xl truncate">
+                    <h1 className="text-base-card font-bold text-center text-xl md:text-2xl truncate">
                         {currentTrack.name}
                     </h1>
-                    <h2 className="text-base-input font-medium text-sm md:text-base truncate">
+                    <h2 className="text-base-input font-medium text-center text-sm md:text-base truncate">
                         {currentTrack.artist}
                     </h2>
                 </div>
-                <CirclePlusIcon
-                    size={36}
-                    color="var(--color-base-card)"
-                    strokeWidth={2}
-                    className="cursor-pointer hover:scale-110 transition-transform shrink-0"
-                />
             </div>
 
             {/* Spotify Player */}

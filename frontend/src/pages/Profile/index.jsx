@@ -40,7 +40,7 @@ export function Profile() {
                 <Link to="/not-found">
                     <SettingsItem label="Termos de uso" icon={FileTextIcon} />
                 </Link>
-                <button onClick={logout} className="w-full text-left">
+                <button onClick={logout} className="w-full text-left hover:cursor-pointer">
                     <SettingsItem label="Sair" icon={LogOutIcon} />
                 </button>
             </div>
