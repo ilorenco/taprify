@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CirclePlusIcon, SlidersHorizontalIcon, ArrowDownUpIcon } from 'lucide-react';
+import { CirclePlusIcon } from 'lucide-react';
 import { PlaylistCard } from './components/PlaylistCard';
 import { CreatePlaylistModal } from './components/CreatePlaylistModal';
 import { EditPlaylistModal } from './components/EditPlaylistModal';
@@ -66,24 +66,6 @@ export function Library() {
                             />
                         </button>
                     </div>
-
-                    <div className="flex items-center justify-between w-full">
-                        <SlidersHorizontalIcon
-                            size={28}
-                            color="var(--color-base-input)"
-                            strokeWidth={2}
-                            className="cursor-pointer sm:w-8 sm:h-8 md:w-9 md:h-9"
-                        />
-                        <div className="flex items-center gap-4 md:gap-6">
-                            <ArrowDownUpIcon
-                                size={28}
-                                color="var(--color-base-input)"
-                                strokeWidth={2}
-                                className="cursor-pointer sm:w-8 sm:h-8 md:w-9 md:h-9"
-                            />
-                        </div>
-                    </div>
-
                     <hr className="border-blue-light border-t-2 py-2" />
                 </div>
             </div>

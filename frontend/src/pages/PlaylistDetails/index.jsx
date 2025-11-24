@@ -92,16 +92,6 @@ export function PlaylistDetails() {
             {/* Seção fixa do cabeçalho - sticky para ficar fixo ao scrollar */}
             <div className="sticky top-0 z-40 bg-background px-4 md:px-6 lg:px-8 pt-4">
                 <div className="flex flex-col gap-4 md:gap-6">
-                    <div className="flex items-center justify-between gap-3 md:gap-4">
-                        <SearchBar placeholder="Pesquisar músicas" />
-                        <SlidersHorizontalIcon
-                            size={32}
-                            color="var(--color-base-input)"
-                            strokeWidth={2}
-                            className="cursor-pointer shrink-0 sm:w-9 sm:h-9 md:w-10 md:h-10 lg:w-12 lg:h-12"
-                        />
-                    </div>
-
                     <div className="flex flex-col gap-2 md:gap-3">
                         <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-light">
                             {playlist.name}
@@ -130,18 +120,6 @@ export function PlaylistDetails() {
                         </div>
                         <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
                             <EllipsisIcon
-                                size={28}
-                                color="var(--color-base-input)"
-                                strokeWidth={2}
-                                className="cursor-pointer sm:w-8 sm:h-8 md:w-9 md:h-9"
-                            />
-                            <ShuffleIcon
-                                size={28}
-                                color="var(--color-base-input)"
-                                strokeWidth={2}
-                                className="cursor-pointer sm:w-8 sm:h-8 md:w-9 md:h-9"
-                            />
-                            <CirclePlayIcon
                                 size={28}
                                 color="var(--color-base-input)"
                                 strokeWidth={2}
