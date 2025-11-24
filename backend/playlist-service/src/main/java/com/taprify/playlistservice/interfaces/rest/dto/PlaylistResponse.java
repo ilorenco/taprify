@@ -11,13 +11,13 @@ public record PlaylistResponse(
     String creatorName,
     int trackCount
 ) {
-    public static PlaylistResponse from(Playlist playlist) {
+    public static PlaylistResponse from(Playlist playlist, int trackCount) {
         return new PlaylistResponse(
             playlist.getId(),
             playlist.getName(),
             playlist.getUserId(),
             playlist.getCreatorName(),
-            0 // Por enquanto retorna 0, será implementado quando integrar com Spotify
+            trackCount
         );
     }
 }

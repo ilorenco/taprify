@@ -91,6 +91,36 @@ const playlistService = {
                 error: error.response?.data?.message || 'Erro ao deletar playlist'
             };
         }
+    },
+
+    async addTrackToPlaylist(playlistId, track) {
+        try {
+            const response = await playlistApi.post(`/playlists/${playlistId}/tracks`, {
+                spotifyTrackId: track.id,
+                trackName: track.name,
+                artistName: track.artist,
+                imageUrl: track.imageUrl,
+                durationMs: track.durationMs
+            });
+            return { success: true, playlist: response.data };
+        } catch (error) {
+            return {
+                success: false,
+                error: error.response?.data?.message || 'Erro ao adicionar música à playlist'
+            };
+        }
+    },
+
+    async getPlaylistDetails(playlistId) {
+        try {
+            const response = await playlistApi.get(`/playlists/${playlistId}/details`);
+            return { success: true, playlist: response.data };
+        } catch (error) {
+            return {
+                success: false,
+                error: error.response?.data?.message || 'Erro ao carregar detalhes da playlist'
+            };
+        }
     }
 };
 

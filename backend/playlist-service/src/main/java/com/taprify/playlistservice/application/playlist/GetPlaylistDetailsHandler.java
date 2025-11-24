@@ -2,37 +2,35 @@ package com.taprify.playlistservice.application.playlist;
 
 import com.taprify.playlistservice.domain.playlist.Playlist;
 import com.taprify.playlistservice.domain.playlist.PlaylistRepository;
+import com.taprify.playlistservice.domain.playlisttrack.PlaylistTrack;
 import com.taprify.playlistservice.domain.playlisttrack.PlaylistTrackRepository;
-import com.taprify.playlistservice.interfaces.rest.dto.PlaylistResponse;
+import com.taprify.playlistservice.interfaces.rest.dto.PlaylistDetailsResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-public class GetPlaylistsHandler {
+public class GetPlaylistDetailsHandler {
     private final PlaylistRepository playlistRepository;
     private final PlaylistTrackRepository playlistTrackRepository;
 
     @Transactional(readOnly = true)
-    public List<PlaylistResponse> handle(UUID userId) {
-        return playlistRepository.findAllByUserId(userId)
-                .stream()
-                .map(playlist -> {
-                    int trackCount = playlistTrackRepository.countByPlaylistId(playlist.getId());
-                    return PlaylistResponse.from(playlist, trackCount);
-                })
-                .toList();
-    }
+    public PlaylistDetailsResponse handle(UUID playlistId) {
+        log.info("Getting playlist details for playlistId: {}", playlistId);
 
-    @Transactional(readOnly = true)
-    public PlaylistResponse handleById(UUID playlistId) {
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new RuntimeException("Playlist não encontrada"));
-        int trackCount = playlistTrackRepository.countByPlaylistId(playlistId);
-        return PlaylistResponse.from(playlist, trackCount);
+
+        List<PlaylistTrack> tracks = playlistTrackRepository.findByPlaylistIdOrderByAddedAtDesc(playlistId);
+
+        log.info("Found playlist with {} tracks", tracks.size());
+
+        return PlaylistDetailsResponse.from(playlist, tracks);
     }
 }

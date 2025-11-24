@@ -1,8 +1,59 @@
+import { useState, useRef, useEffect } from 'react';
 import { CircleUserIcon, EllipsisIcon, CirclePlayIcon, CirclePlusIcon } from 'lucide-react';
+import { OverflowMenu } from '../../../../components/commons/OverflowMenu';
+import playlistService from '../../../../services/playlistService';
 
 export function TrackPlayerCard({ track }) {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
+    const [playlists, setPlaylists] = useState([]);
+    const buttonRef = useRef(null);
+
+    useEffect(() => {
+        loadPlaylists();
+    }, []);
+
+    const loadPlaylists = async () => {
+        const result = await playlistService.getMyPlaylists();
+        if (result.success) {
+            setPlaylists(result.playlists);
+        }
+    };
+
+    const handleMenuClick = (e) => {
+        e.stopPropagation();
+
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            setMenuPosition({
+                top: rect.top,
+                right: window.innerWidth - rect.right,
+            });
+        }
+
+        setIsMenuOpen(!isMenuOpen);
+    };
+
+    const handleAddToPlaylist = async (playlistId) => {
+        setIsMenuOpen(false);
+
+        const result = await playlistService.addTrackToPlaylist(playlistId, track);
+
+        if (result.success) {
+            alert('Música adicionada à playlist com sucesso!');
+        } else {
+            alert(result.error);
+        }
+    };
+
+    const menuOptions = playlists.map(playlist => ({
+        label: playlist.name,
+        onClick: () => handleAddToPlaylist(playlist.id),
+        className: "text-white"
+    }));
+
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 relative">
             <header className="flex items-center gap-2">
                 <CircleUserIcon size={42} color="var(--color-blue-sky)" strokeWidth={1.5} />
                 <h1 className="font-semibold font-inter text-base text-base-input">{track?.artist || 'Nome do autor'}</h1>
@@ -39,11 +90,26 @@ export function TrackPlayerCard({ track }) {
                 </div>
 
                 <div className="absolute bottom-2 right-2 flex items-center gap-2">
-                    <CirclePlusIcon size={36} color="var(--color-base-input)" strokeWidth={1.5} className="cursor-pointer hover:scale-110 transition-transform" />
+                    <div ref={buttonRef}>
+                        <CirclePlusIcon
+                            size={36}
+                            color="var(--color-base-input)"
+                            strokeWidth={1.5}
+                            className="cursor-pointer hover:scale-110 transition-transform"
+                            onClick={handleMenuClick}
+                        />
+                    </div>
                     <CirclePlayIcon size={36} color="var(--color-base-input)" strokeWidth={1.5} className="cursor-pointer hover:scale-110 transition-transform" />
                 </div>
 
             </main>
+
+            <OverflowMenu
+                isOpen={isMenuOpen}
+                onClose={() => setIsMenuOpen(false)}
+                options={menuOptions.length > 0 ? menuOptions : [{ label: 'Nenhuma playlist disponível', onClick: () => {}, className: 'text-gray-400' }]}
+                position={menuPosition}
+            />
         </div>
     )
 }

@@ -1,11 +1,19 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { EllipsisVerticalIcon, Pencil, Trash2 } from "lucide-react";
 import { OverflowMenu } from "../../../../components/commons/OverflowMenu";
 
 export function PlaylistCard({ playlist, onEdit, onDelete }) {
+    const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
     const buttonRef = useRef(null);
+
+    const handleCardClick = () => {
+        if (playlist?.id) {
+            navigate(`/my-playlist/${playlist.id}`);
+        }
+    };
 
     const handleMenuClick = (e) => {
         e.stopPropagation();
@@ -44,7 +52,10 @@ export function PlaylistCard({ playlist, onEdit, onDelete }) {
 
     return (
         <div className="relative">
-            <div className="w-full h-[72px] rounded-lg flex items-center gap-2 cursor-pointer hover:bg-purple-ultra-violet/10 transition-colors p-2">
+            <div
+                onClick={handleCardClick}
+                className="w-full h-[72px] rounded-lg flex items-center gap-2 cursor-pointer hover:bg-purple-ultra-violet/10 transition-colors p-2"
+            >
                 <div className="w-[72px] h-[72px] bg-purple-ultra-violet rounded-lg shrink-0"></div>
                 <div className="flex items-center justify-between w-full">
                     <div className="flex flex-col gap-1 min-w-0">

@@ -18,6 +18,6 @@ public class CreatePlaylistHandler {
     public PlaylistResponse handle(String name, UUID userId, String creatorName) {
         Playlist playlist = Playlist.create(name, userId, creatorName);
         Playlist savedPlaylist = playlistRepository.save(playlist);
-        return PlaylistResponse.from(savedPlaylist);
+        return PlaylistResponse.from(savedPlaylist, 0);
     }
 }

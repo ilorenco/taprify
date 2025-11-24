@@ -2,6 +2,7 @@ package com.taprify.playlistservice.application.playlist;
 
 import com.taprify.playlistservice.domain.playlist.Playlist;
 import com.taprify.playlistservice.domain.playlist.PlaylistRepository;
+import com.taprify.playlistservice.domain.playlisttrack.PlaylistTrackRepository;
 import com.taprify.playlistservice.interfaces.rest.dto.PlaylistResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UpdatePlaylistHandler {
     private final PlaylistRepository playlistRepository;
+    private final PlaylistTrackRepository playlistTrackRepository;
 
     @Transactional
     public PlaylistResponse handle(UUID playlistId, String name, UUID userId) {
@@ -26,6 +28,7 @@ public class UpdatePlaylistHandler {
         playlist.setName(name);
 
         Playlist updatedPlaylist = playlistRepository.save(playlist);
-        return PlaylistResponse.from(updatedPlaylist);
+        int trackCount = playlistTrackRepository.countByPlaylistId(playlistId);
+        return PlaylistResponse.from(updatedPlaylist, trackCount);
     }
 }
