@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CirclePlusIcon, SlidersHorizontalIcon, SearchIcon, ArrowDownUpIcon } from 'lucide-react';
+import { CirclePlusIcon, SlidersHorizontalIcon, ArrowDownUpIcon } from 'lucide-react';
 import { PlaylistCard } from './components/PlaylistCard';
 import { CreatePlaylistModal } from './components/CreatePlaylistModal';
 import { EditPlaylistModal } from './components/EditPlaylistModal';
@@ -75,12 +75,6 @@ export function Library() {
                             className="cursor-pointer sm:w-8 sm:h-8 md:w-9 md:h-9"
                         />
                         <div className="flex items-center gap-4 md:gap-6">
-                            <SearchIcon
-                                size={28}
-                                color="var(--color-base-input)"
-                                strokeWidth={2}
-                                className="cursor-pointer sm:w-8 sm:h-8 md:w-9 md:h-9"
-                            />
                             <ArrowDownUpIcon
                                 size={28}
                                 color="var(--color-base-input)"
@@ -96,7 +90,7 @@ export function Library() {
 
             {/* Área de rolagem dos cards */}
             <div className="flex-1 overflow-y-auto px-4 md:px-6 lg:px-8">
-                <div className="flex flex-col gap-3 md:gap-4 py-4 md:py-6">
+                <div className="flex flex-col gap-3 md:gap-4 py-4 md:py-6 pb-20">
                     {loading && (
                         <p className="text-white text-center py-8">Carregando playlists...</p>
                     )}

@@ -156,7 +156,7 @@ export function PlaylistDetails() {
 
             {/* Área de rolagem dos tracks */}
             <div className="flex-1 overflow-y-auto px-4 md:px-6 lg:px-8">
-                <div className="flex flex-col gap-3 md:gap-4 py-4 md:py-6">
+                <div className="flex flex-col gap-3 md:gap-4 py-4 md:py-6 pb-20">
                     {playlist.tracks && playlist.tracks.length > 0 ? (
                         playlist.tracks.map((track, index) => (
                             <TrackCard key={track.id} track={{...track, trackNumber: track.trackNumber || index + 1}} />

@@ -3,6 +3,7 @@ package com.taprify.spotifyservice.infrastructure.spotify;
 import com.taprify.spotifyservice.infrastructure.config.SpotifyConfig;
 import com.taprify.spotifyservice.infrastructure.spotify.dto.SpotifyAlbumDto;
 import com.taprify.spotifyservice.infrastructure.spotify.dto.SpotifyAlbumsResponse;
+import com.taprify.spotifyservice.infrastructure.spotify.dto.SpotifyNewReleasesResponse;
 import com.taprify.spotifyservice.infrastructure.spotify.dto.SpotifyTracksResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -93,6 +94,33 @@ public class SpotifyApiClient {
         } catch (Exception e) {
             log.error("Error fetching album details from Spotify API", e);
             throw new RuntimeException("Failed to fetch album details from Spotify", e);
+        }
+    }
+
+    public SpotifyNewReleasesResponse getNewReleases(int limit) {
+        String token = tokenManager.getAccessToken();
+
+        log.info("Fetching new releases from Spotify API with limit: {}", limit);
+
+        try {
+            SpotifyNewReleasesResponse response = webClientBuilder
+                    .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(1024 * 1024))
+                    .build()
+                    .get()
+                    .uri(spotifyConfig.getApiUrl() + "/browse/new-releases?limit=" + limit)
+                    .header("Authorization", "Bearer " + token)
+                    .retrieve()
+                    .bodyToMono(SpotifyNewReleasesResponse.class)
+                    .block();
+
+            log.info("Successfully fetched {} new releases from Spotify",
+                    response != null && response.getAlbums() != null && response.getAlbums().getItems() != null
+                            ? response.getAlbums().getItems().size() : 0);
+
+            return response;
+        } catch (Exception e) {
+            log.error("Error fetching new releases from Spotify API", e);
+            throw new RuntimeException("Failed to fetch new releases from Spotify", e);
         }
     }
 }

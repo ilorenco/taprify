@@ -47,6 +47,19 @@ const spotifyService = {
         }
     },
 
+    async getNewReleases() {
+        try {
+            const response = await spotifyApi.get('/albums/new-releases');
+            return { success: true, albums: response.data };
+        } catch (error) {
+            console.error('Error fetching new releases from Spotify:', error);
+            return {
+                success: false,
+                error: error.response?.data?.message || 'Erro ao carregar novos lançamentos'
+            };
+        }
+    },
+
     async getAlbumDetails(albumId) {
         try {
             const response = await spotifyApi.get(`/albums/${albumId}`);

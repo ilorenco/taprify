@@ -20,7 +20,6 @@ export function Header() {
                 </button>
             ) : (
                 <div className="flex gap-4">
-                    <FilterTabs isActive={location.pathname === '/albums'}>Álbuns</FilterTabs>
                     <FilterTabs isActive={location.pathname === '/'}>Tudo</FilterTabs>
                 </div>
             )}

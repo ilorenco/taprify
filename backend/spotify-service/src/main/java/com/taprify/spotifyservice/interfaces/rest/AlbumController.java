@@ -3,6 +3,7 @@ package com.taprify.spotifyservice.interfaces.rest;
 import com.taprify.spotifyservice.application.album.GetAlbumDetailsHandler;
 import com.taprify.spotifyservice.application.album.GetAlbumRecommendationsHandler;
 import com.taprify.spotifyservice.application.album.GetAlbumsHandler;
+import com.taprify.spotifyservice.application.album.GetNewReleasesHandler;
 import com.taprify.spotifyservice.interfaces.rest.dto.AlbumDetailsResponse;
 import com.taprify.spotifyservice.interfaces.rest.dto.AlbumResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class AlbumController {
     private final GetAlbumsHandler getAlbumsHandler;
     private final GetAlbumRecommendationsHandler getAlbumRecommendationsHandler;
     private final GetAlbumDetailsHandler getAlbumDetailsHandler;
+    private final GetNewReleasesHandler getNewReleasesHandler;
 
     @GetMapping
     public ResponseEntity<List<AlbumResponse>> getAlbums() {
@@ -44,5 +46,12 @@ public class AlbumController {
         log.info("GET /albums/{} - Fetching album details", id);
         AlbumDetailsResponse albumDetails = getAlbumDetailsHandler.handle(id);
         return ResponseEntity.ok(albumDetails);
+    }
+
+    @GetMapping("/new-releases")
+    public ResponseEntity<List<AlbumResponse>> getNewReleases() {
+        log.info("GET /albums/new-releases - Fetching new releases");
+        List<AlbumResponse> albums = getNewReleasesHandler.handle();
+        return ResponseEntity.ok(albums);
     }
 }
