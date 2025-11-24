@@ -23,7 +23,9 @@ public class SpotifyApiClient {
         log.info("Fetching albums from Spotify API with IDs: {}", albumIds);
 
         try {
-            SpotifyAlbumsResponse response = webClientBuilder.build()
+            SpotifyAlbumsResponse response = webClientBuilder
+                    .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(1024 * 1024))
+                    .build()
                     .get()
                     .uri(spotifyConfig.getApiUrl() + "/albums?ids=" + albumIds)
                     .header("Authorization", "Bearer " + token)
@@ -47,7 +49,9 @@ public class SpotifyApiClient {
         log.info("Fetching tracks from Spotify API with IDs: {}", trackIds);
 
         try {
-            SpotifyTracksResponse response = webClientBuilder.build()
+            SpotifyTracksResponse response = webClientBuilder
+                    .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(1024 * 1024))
+                    .build()
                     .get()
                     .uri(spotifyConfig.getApiUrl() + "/tracks?ids=" + trackIds)
                     .header("Authorization", "Bearer " + token)

@@ -1,5 +1,6 @@
 package com.taprify.spotifyservice.interfaces.rest;
 
+import com.taprify.spotifyservice.application.album.GetAlbumRecommendationsHandler;
 import com.taprify.spotifyservice.application.album.GetAlbumsHandler;
 import com.taprify.spotifyservice.interfaces.rest.dto.AlbumResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,19 @@ import java.util.List;
 public class AlbumController {
 
     private final GetAlbumsHandler getAlbumsHandler;
+    private final GetAlbumRecommendationsHandler getAlbumRecommendationsHandler;
 
     @GetMapping
     public ResponseEntity<List<AlbumResponse>> getAlbums() {
         log.info("GET /albums - Fetching popular albums");
         List<AlbumResponse> albums = getAlbumsHandler.handle();
+        return ResponseEntity.ok(albums);
+    }
+
+    @GetMapping("/recommendations")
+    public ResponseEntity<List<AlbumResponse>> getAlbumRecommendations() {
+        log.info("GET /albums/recommendations - Fetching album recommendations");
+        List<AlbumResponse> albums = getAlbumRecommendationsHandler.handle();
         return ResponseEntity.ok(albums);
     }
 }

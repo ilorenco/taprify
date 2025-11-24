@@ -32,6 +32,19 @@ const spotifyService = {
                 error: error.response?.data?.message || 'Erro ao carregar músicas do Spotify'
             };
         }
+    },
+
+    async getAlbumRecommendations() {
+        try {
+            const response = await spotifyApi.get('/albums/recommendations');
+            return { success: true, albums: response.data };
+        } catch (error) {
+            console.error('Error fetching album recommendations from Spotify:', error);
+            return {
+                success: false,
+                error: error.response?.data?.message || 'Erro ao carregar recomendações de álbuns'
+            };
+        }
     }
 };
 
