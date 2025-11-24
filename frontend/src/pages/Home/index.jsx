@@ -5,25 +5,36 @@ import spotifyService from '../../services/spotifyService';
 
 export function Home() {
     const [albums, setAlbums] = useState([]);
+    const [tracks, setTracks] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function loadAlbums() {
+        async function loadData() {
             try {
-                const result = await spotifyService.getAlbums();
-                if (result.success) {
-                    setAlbums(result.albums);
+                const [albumsResult, tracksResult] = await Promise.all([
+                    spotifyService.getAlbums(),
+                    spotifyService.getTracks()
+                ]);
+
+                if (albumsResult.success) {
+                    setAlbums(albumsResult.albums);
                 } else {
-                    console.error('Erro ao carregar álbuns:', result.error);
+                    console.error('Erro ao carregar álbuns:', albumsResult.error);
+                }
+
+                if (tracksResult.success) {
+                    setTracks(tracksResult.tracks);
+                } else {
+                    console.error('Erro ao carregar tracks:', tracksResult.error);
                 }
             } catch (error) {
-                console.error('Erro ao carregar álbuns:', error);
+                console.error('Erro ao carregar dados:', error);
             } finally {
                 setLoading(false);
             }
         }
 
-        loadAlbums();
+        loadData();
     }, []);
 
     return (
@@ -44,18 +55,15 @@ export function Home() {
 
             <section className="flex flex-col gap-4 ">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-                    <TrackPlayerCard />
-                    <TrackPlayerCard />
-                    <TrackPlayerCard />
-                    <TrackPlayerCard />
-                    <TrackPlayerCard />
-                    <TrackPlayerCard />
-                    <TrackPlayerCard />
-                    <TrackPlayerCard />
-                    <TrackPlayerCard />
-                    <TrackPlayerCard />
-                    <TrackPlayerCard />
-                    <TrackPlayerCard />
+                    {loading ? (
+                        <p className="text-base-card">Carregando músicas...</p>
+                    ) : tracks.length > 0 ? (
+                        tracks.map((track) => (
+                            <TrackPlayerCard key={track.id} track={track} />
+                        ))
+                    ) : (
+                        <p className="text-base-card">Nenhuma música encontrada</p>
+                    )}
                 </div>
             </section>
         </div>
