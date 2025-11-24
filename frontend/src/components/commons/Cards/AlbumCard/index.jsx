@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-export function AlbumCard({ album }) {
+export function AlbumCard({ album, variant = 'carousel' }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -9,10 +9,14 @@ export function AlbumCard({ album }) {
         }
     };
 
+    const sizeClasses = variant === 'grid'
+        ? 'w-full aspect-square min-w-[120px]'
+        : 'min-w-[120px] w-[120px] sm:min-w-[140px] sm:w-[140px] md:min-w-[160px] md:w-[160px] h-[160px] sm:h-[180px] md:h-[200px]';
+
     return (
         <div
             onClick={handleClick}
-            className="min-w-[120px] w-[120px] sm:min-w-[140px] sm:w-[140px] md:min-w-[160px] md:w-[160px] h-[160px] sm:h-[180px] md:h-[200px] rounded-lg flex flex-col items-center justify-between p-2 shrink-0 transition-transform hover:scale-105 cursor-pointer relative overflow-hidden group">
+            className={`${sizeClasses} rounded-lg flex flex-col items-center justify-between p-2 shrink-0 transition-transform hover:scale-105 cursor-pointer relative overflow-hidden group`}>
             {album?.imageUrl ? (
                 <>
                     <img

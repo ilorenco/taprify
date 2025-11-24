@@ -71,15 +71,15 @@ export function Search() {
 
             <section className="flex flex-col gap-4">
                 <h2 className="font-semibold text-base-card text-lg md:text-xl">Novos Lançamentos</h2>
-                <div className="flex flex-wrap gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
                     {loadingNewReleases ? (
                         // Mostra 12 skeletons durante o carregamento
                         Array.from({ length: 12 }).map((_, index) => (
-                            <AlbumCardSkeleton key={`new-release-skeleton-${index}`} />
+                            <AlbumCardSkeleton key={`new-release-skeleton-${index}`} variant="grid" />
                         ))
                     ) : newReleases.length > 0 ? (
                         newReleases.map((album) => (
-                            <AlbumCard key={album.id} album={album} />
+                            <AlbumCard key={album.id} album={album} variant="grid" />
                         ))
                     ) : (
                         <p className="text-base-card">Nenhum lançamento disponível</p>

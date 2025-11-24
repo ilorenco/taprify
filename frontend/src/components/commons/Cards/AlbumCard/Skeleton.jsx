@@ -1,6 +1,10 @@
-export function AlbumCardSkeleton() {
+export function AlbumCardSkeleton({ variant = 'carousel' }) {
+    const sizeClasses = variant === 'grid'
+        ? 'w-full aspect-square min-w-[120px]'
+        : 'min-w-[120px] w-[120px] sm:min-w-[140px] sm:w-[140px] md:min-w-[160px] md:w-[160px] h-[160px] sm:h-[180px] md:h-[200px]';
+
     return (
-        <div className="min-w-[120px] w-[120px] sm:min-w-[140px] sm:w-[140px] md:min-w-[160px] md:w-[160px] h-[160px] sm:h-[180px] md:h-[200px] rounded-lg flex flex-col items-center justify-between p-2 shrink-0 overflow-hidden animate-pulse relative">
+        <div className={`${sizeClasses} rounded-lg flex flex-col items-center justify-between p-2 shrink-0 overflow-hidden animate-pulse relative`}>
             {/* Background skeleton */}
             <div className="absolute inset-0 bg-purple-ultra-violet"></div>
 
